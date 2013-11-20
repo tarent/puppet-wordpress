@@ -18,6 +18,7 @@ class wordpress(
   $wordpress_db_password='password',
   $wordpress_admin = 'admin',
   $wordpress_admin_mail = 'localhost@localhost',
+  $wordpress_version = '3.5.1',
   $blogname = 'wordpress blog',
   $multisite = false,
   $path_current_site = '/',
