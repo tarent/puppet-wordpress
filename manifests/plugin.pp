@@ -14,6 +14,7 @@
 define wordpress::plugin(
   $location,
   $archive,
+  $activate = false,
 ){
 
   exec { "plugin: ${name} download":
@@ -42,5 +43,25 @@ define wordpress::plugin(
       '/usr/bin:/sbin',
       '/bin',
     ],
+  }
+
+  if $activate == true {
+    exec { "mysql -u ${wordpress::wordpress_db_user}
+      -p${wordpress::wordpress_db_password} ${wordpress::wordpress_db_name}
+      < /opt/wordpress/wp-content/${name}/sql/auto-activation.sql":
+      require => Exec["plugin: ${name} extract"],
+      path    => [
+        '/usr/local/sbin',
+        '/usr/local/bin',
+        '/usr/sbin',
+        '/usr/bin:/sbin',
+        '/bin',
+      ],
+      unless  => "mysql -u ${wordpress::wordpress_db_user}
+        -h localhost -p${wordpress::wordpress_db_password}
+        --database ${wordpress::wordpress_db_name}
+        -e 'show tables;' |
+        grep Tables_in_${wordpress::wordpress_db_name} -c",
+    }
   }
 }
