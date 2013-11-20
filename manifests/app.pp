@@ -1,8 +1,8 @@
 # Install wordpress application and its dependencies
 class wordpress::app inherits wordpress {
 
-  $wordpress_url     = 'wordpress.org/wordpress-${wordpress_version}.zip'
-  $wordpress_archive = 'wordpress-${wordpress_version}.zip'
+  $wordpress_url     = "wordpress.org/wordpress-${::wordpress::wordpress_version}.zip"
+  $wordpress_archive = "wordpress-${::wordpress::wordpress_version}.zip"
 
   $apache = $::operatingsystem ? {
     Ubuntu   => apache2,
@@ -54,7 +54,7 @@ class wordpress::app inherits wordpress {
 
 
   exec { 'wordpress_installer':
-    command => 'wget -q ${wordpress_url} -O /opt/wordpress/setup_files/${wordpress_archive}',
+    command => "wget -q ${wordpress_url} -O /opt/wordpress/setup_files/${wordpress_archive}",
     path    => [
       '/usr/bin/',
     ],
