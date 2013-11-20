@@ -16,7 +16,7 @@ define wordpress::plugin(
   $archive,
 ){
 
-  exec { "download plugin ${archive}":
+  exec { "plugin: ${name} download":
     command => "wget -q ${location}/${archive} -O /tmp/${archive}",
     path    => [
       '/usr/local/sbin',
@@ -25,12 +25,12 @@ define wordpress::plugin(
       '/usr/bin:/sbin',
       '/bin'
     ],
-    notify  => Exec["plugin: ${name} entpacken"],
+    notify  => Exec["plugin: ${name} extract"],
     require => Package['wget'],
     unless  => "test -d /opt/wordpress/wp-content/plugins/${name}",
   }
 
-  exec { "plugin: ${name} entpacken":
+  exec { "plugin: ${name} extract":
     refreshonly => true,
     require     => Package['unzip'],
     command     =>
