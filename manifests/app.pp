@@ -24,7 +24,7 @@ class wordpress::app inherits wordpress {
     default  => php
   }
 
-  package { ['unzip',$apache,$php,$phpmysql]:
+  package { ['unzip',$php,$phpmysql]:
     ensure => latest
   }
 
@@ -32,15 +32,6 @@ class wordpress::app inherits wordpress {
     httpd    => '/etc/httpd/conf.d/wordpress.conf',
     apache2  => '/etc/apache2/sites-enabled/000-default',
     default  => '/etc/httpd/conf.d/wordpress.conf',
-  }
-
-  service { $apache:
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
-    require    => Package[$apache, $php, $phpmysql],
-    subscribe  => File['wordpress_vhost'],
   }
 
   file { 'wordpress_application_dir':
@@ -101,7 +92,7 @@ class wordpress::app inherits wordpress {
     path     => $vhost_path,
     source   => 'puppet:///modules/wordpress/wordpress.conf',
     replace  => true,
-    require  => Package[$apache],
+    require  => Class['apache2'],
   }
 
   if $::wordpress::multisite == true {
