@@ -27,7 +27,7 @@ define wordpress::plugin(
     ],
     notify  => Exec["plugin: ${name} entpacken"],
     require => Package['wget'],
-    onlyif  => "test -d /opt/wordpress/wp-content/plugins/$name",
+    unless  => "test -d /opt/wordpress/wp-content/plugins/${name}",
   }
 
   exec { "plugin: ${name} entpacken":
