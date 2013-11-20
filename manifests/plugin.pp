@@ -17,7 +17,7 @@ define wordpress::plugin(
 ){
 
   exec { "download plugin ${archive}":
-    command => "wget -q ${location}/${archive} -O /tmp/",
+    command => "wget -q ${location}/${archive} -O /tmp/${archive}",
     path    => [
       '/usr/local/sbin',
       '/usr/local/bin',
