@@ -31,22 +31,37 @@ define wordpress::plugin(
     unless  => "test -d /opt/wordpress/wp-content/plugins/${name}",
   }
 
-  exec { "plugin: ${name} extract":
-    refreshonly => true,
-    require     => Package['unzip'],
-    notify      => $activate ? {
-      true      => Exec["plugin: ${name} activation"],
-      default   => Notify["plugin: ${name} no activation"],
-    },
-    command     =>
-      "unzip /tmp/${archive} -d /opt/wordpress/wp-content/plugins/${name}",
-    path        => [
-      '/usr/local/sbin',
-      '/usr/local/bin',
-      '/usr/sbin',
-      '/usr/bin:/sbin',
-      '/bin',
-    ],
+  if $activate == 'true' {
+    exec { "plugin: ${name} extract":
+      refreshonly => true,
+      require     => Package['unzip'],
+      notify      => Exec["plugin: ${name} activation"],
+      command     =>
+        "unzip /tmp/${archive} -d /opt/wordpress/wp-content/plugins/${name}",
+      path        => [
+        '/usr/local/sbin',
+        '/usr/local/bin',
+        '/usr/sbin',
+        '/usr/bin:/sbin',
+        '/bin',
+      ],
+    }
+  }
+  else {
+    exec { "plugin: ${name} extract":
+      refreshonly => true,
+      require     => Package['unzip'],
+      notify      => Notify["plugin: ${name} no activation"],
+      command     =>
+        "unzip /tmp/${archive} -d /opt/wordpress/wp-content/plugins/${name}",
+      path        => [
+        '/usr/local/sbin',
+        '/usr/local/bin',
+        '/usr/sbin',
+        '/usr/bin:/sbin',
+        '/bin',
+      ],
+    }
   }
 
   exec { "plugin: ${name} activation":
