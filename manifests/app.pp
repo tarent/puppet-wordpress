@@ -44,21 +44,25 @@ class wordpress::app inherits wordpress {
   file { 'wordpress_setup_files_dir':
     ensure  =>  directory,
     path    =>  '/opt/wordpress/setup_files',
-    before  =>  File[
-      'wordpress_php_configuration',
-      'wordpress_themes',
-      'wordpress_plugins'
+    before  =>  [
+      File[
+        'wordpress_php_configuration',
+        'wordpress_themes',
+        'wordpress_plugins'
+      ],
+      Exec[
+        'wordpress_installer'
+      ],
     ],
-    Exec['wordpress_installer'],
   }
-
 
   exec { 'wordpress_installer':
     command => "wget -q ${wordpress_url} -O /opt/wordpress/setup_files/${wordpress_archive}",
     path    => [
       '/usr/bin/',
     ],
-    notify  =>  Exec['wordpress_extract_installer'],
+    notify  => Exec['wordpress_extract_installer'],
+    onlyif  => "test -d /opt/wordpress/setup_files/${wordpress_archive}",
   }
 
 
