@@ -27,6 +27,7 @@ class wordpress(
   $db_password = $wordpress_db_password
 
   include 'apache2'
+  include 'wordpress::install'
 
   class { 'wordpress::app':
     require => Class['apache2'],
