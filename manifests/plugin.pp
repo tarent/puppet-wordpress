@@ -31,7 +31,7 @@ define wordpress::plugin(
       '/bin'
     ],
     notify  => Exec["plugin: ${name} extract"],
-    unless  => "test -d ${setup_dir}/plugins/${archive}",
+    unless  => "test -f ${setup_dir}/plugins/${archive}",
     require => [
       Exec['wordpress_extract_installer', 'install initial database'],
       Package['unzip', 'wget']
