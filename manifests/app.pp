@@ -63,7 +63,7 @@ class wordpress::app inherits wordpress {
       '/usr/bin/',
     ],
     notify  => Exec['wordpress_extract_installer'],
-    creates => "/opt/wordpress/setup_files/${wordpress_archive}",
+    onlyif  => "test -f /opt/wordpress/setup_files/${wordpress_archive}",
   }
 
 
