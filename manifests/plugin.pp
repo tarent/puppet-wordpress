@@ -41,7 +41,7 @@ define wordpress::plugin(
 
   exec { "plugin: ${name} extract":
     refreshonly => true,
-    command     => "unzip ${setup_dir}/plugins/${archive} \
+    command     => "unzip -o ${setup_dir}/plugins/${archive} \
       -d /opt/wordpress/wp-content/plugins/${name}",
     path        => [
       '/usr/local/sbin',
