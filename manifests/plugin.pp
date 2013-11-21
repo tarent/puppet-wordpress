@@ -17,6 +17,9 @@ define wordpress::plugin(
   $activate = false,
 ){
 
+  $wordpress_dir = '/opt/wordpress'
+  $setup_dir = "${wordpress_dir}/setup_files"
+
   exec { "plugin: ${name} download":
     command => "wget -q ${location}/${archive} \
       -O /opt/wordpress/setup_files/plugins/${archive}",
@@ -28,7 +31,7 @@ define wordpress::plugin(
       '/bin'
     ],
     notify  => Exec["plugin: ${name} extract"],
-    unless  => "test -d /opt/wordpress/setup_files/plugins/${archive}",
+    unless  => "test -d ${setup_dir}/plugins/${archive}",
     require => [
       Exec['wordpress_extract_installer', 'install initial database'],
       Package['unzip', 'wget']
@@ -38,8 +41,8 @@ define wordpress::plugin(
 
   exec { "plugin: ${name} extract":
     refreshonly => true,
-    command     =>
-      "unzip /tmp/${archive} -d /opt/wordpress/wp-content/plugins/${name}",
+    command     => "unzip ${setup_dir}/plugins/${archive} \
+      -d /opt/wordpress/wp-content/plugins/${name}",
     path        => [
       '/usr/local/sbin',
       '/usr/local/bin',
