@@ -54,9 +54,9 @@ define wordpress::plugin(
   }
 
   exec { "plugin: ${name} activation":
-    command     => "mysql -u ${wordpress::wordpress_db_user}" +
-    "-p${wordpress::wordpress_db_password} " +
-    "< /opt/wordpress/wp-content/${name}/sql/auto-activation.sql",
+    command     => "mysql -u ${wordpress::wordpress_db_user}
+      -p${wordpress::wordpress_db_password}
+      < /opt/wordpress/wp-content/${name}/sql/auto-activation.sql",
     require     => Exec["plugin: ${name} extract"],
     path        => [
       '/usr/local/sbin',
