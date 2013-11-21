@@ -1,13 +1,18 @@
-# Definition: wordpress::config
+# == Class: wordpress::config
+# Setup of the wordpress database bevore installing wordpress itself
 #
+# === Parameters
 #
-# Parameters:
+# === Variables
 #
-# Actions:
+# === Authors
+# 
+# Volker Schmitz <v.schmitz@tarent.de>
+# Viktor Hamm <v.hamm@tarent.de>
+# Sebastian Reimers <s.reime@tarent.de>
+# Max Marche <m.march@tarent.de>
 #
-# Requires:
-#
-# Sample Usage:
+# === Sample Usage
 #
 # include wordpress::config
 #

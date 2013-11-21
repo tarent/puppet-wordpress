@@ -1,4 +1,4 @@
-# == Class: wordpress::app
+# == Class: wordpress::db
 #
 # Install mysql server
 # and set up initial wordpress database and user

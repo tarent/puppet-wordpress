@@ -1,4 +1,4 @@
-# == Class: wordpress::app
+# == Class: wordpress::plugin
 #
 # Install wordpress application and its dependencies
 #
