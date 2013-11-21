@@ -75,11 +75,11 @@ define wordpress::plugin(
   }
   if $activate == true {
     exec { "plugin: ${name} backup trigger":
-      commant     => "mysqldump --databases --opt -Q \
+      command     => "mysqldump --databases --opt -Q \
       -u${::wordpress::wordpress_db_user} \
-      -p{::wordpress::wordpress_db_passowrd} \
-      -u${::wordpress::wordpress_db_name} \
-      > /opt/wordpress/db_backup/befor_activate__${archive}.sql"
+      -p${::wordpress::wordpress_db_password} \
+      ${::wordpress::wordpress_db_name} \
+      > /opt/wordpress/db_backup/befor_activate__${archive}.sql",
       path        => [
         '/usr/local/sbin',
         '/usr/local/bin',
