@@ -61,7 +61,6 @@ define wordpress::plugin(
     ],
   }
 
-
   exec { "plugin: ${name} extract":
     refreshonly => true,
     command     => "unzip -o ${setup_dir}/plugins/${archive} \
@@ -75,8 +74,25 @@ define wordpress::plugin(
     ],
   }
   if $activate == true {
-    exec { "plugin: ${name} activation":
+    exec { "plugin: ${name} backup trigger":
+      commant     => "mysqldump --databases --opt -Q \
+      -u${::wordpress::wordpress_db_user} \
+      -p{::wordpress::wordpress_db_passowrd} \
+      -u${::wordpress::wordpress_db_name} \
+      > /opt/wordpress/db_backup/befor_activate__${archive}.sql"
+      path        => [
+        '/usr/local/sbin',
+        '/usr/local/bin',
+        '/usr/sbin',
+        '/usr/bin:/sbin',
+        '/bin',
+      ],
+      refreshonly => true,
       subscribe   => Exec["plugin: ${name} extract"],
+      notify      => Exec["plugin: ${name} activation"],
+    }
+
+    exec { "plugin: ${name} activation":
       command     => "mysql -u ${wordpress::wordpress_db_user} \
         -p${wordpress::wordpress_db_password} \
         -D ${wordpress::wordpress_db_name} \
