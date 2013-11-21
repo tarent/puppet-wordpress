@@ -118,7 +118,8 @@ class wordpress::app inherits wordpress {
                     -d /opt/",
     refreshonly  => true,
     require      => Package['unzip'],
-    path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'];
+    path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
+    creates      => "/opt/wordpress/setup_files/${wordpress_archive}";
   'wordpress_extract_themes':
     command      => '/bin/sh -c \'for themeindex in `ls \
                     /opt/wordpress/setup_files/themes/*.zip`; \
