@@ -119,7 +119,6 @@ class wordpress::app inherits wordpress {
     path       => '/opt/wordpress/setup_files/plugins',
     source     => 'puppet:///modules/wordpress/plugins/',
     recurse    => true,
-    purge      => true,
     ignore     => '.svn',
     notify     => Exec['wordpress_extract_plugins'],
     subscribe  => Exec['wordpress_extract_installer'],
