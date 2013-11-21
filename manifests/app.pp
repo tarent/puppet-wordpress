@@ -57,13 +57,13 @@ class wordpress::app inherits wordpress {
   }
 
   exec { 'wordpress_installer':
-    command => "wget -q ${wordpress_url}
-      -O /opt/wordpress/setup_files/${wordpress_archive}",
+    command => "wget -q ${wordpress_url} -O \
+      /opt/wordpress/setup_files/${wordpress_archive}",
     path    => [
       '/usr/bin/',
     ],
     notify  => Exec['wordpress_extract_installer'],
-    unless  => 'test -e /opt/wordpress/setup_files/${wordpress_archive}',
+    unless  => "test -e /opt/wordpress/setup_files/${wordpress_archive}",
   }
 
 
@@ -118,20 +118,11 @@ class wordpress::app inherits wordpress {
                     /opt/wordpress/setup_files/${wordpress_archive}\
                     -d /opt/",
     refreshonly  => true,
-<<<<<<< HEAD
     require      => Package['unzip'],
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin']
   }
 
   exec {
-=======
-    require      => [
-      File["/opt/wordpress/setup_files/${wordpress_archives}"],
-      Package['unzip']
-    ],
-    path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
-    creates      => "/opt/wordpress/setup_files/${wordpress_archive}";
->>>>>>> f3f4e11914c8436cfc7a7fd3f2ddde9ee0ec6aaa
   'wordpress_extract_themes':
     command      => '/bin/sh -c \'for themeindex in `ls \
                     /opt/wordpress/setup_files/themes/*.zip`; \
