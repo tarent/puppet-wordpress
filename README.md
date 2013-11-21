@@ -6,7 +6,6 @@ __Software__
 * Wordpress v. 3.5.1
 * unzip
 * mysql
-* apache2
 * php5
 * php5-mysql
 * libapache2-mod-php5
@@ -16,14 +15,19 @@ _Themes_
 * Graphene 1.8.3
 * Suffusion 4.4.6
 
-_Plugins_
+_Plugins by default_
 * Wordpress importer 0.6
+
+_Dependencies_
+* puppetlabs/apache
 
 __Usage__
 
-    class {
-      wordpress:
-      wordpress_db_name =>      "<name of database>",
-      wordpress_db_user =>      "<database user>",
-      wordpress_db_password =>  "<database password>"
-    }
+     class { 'wordpress':
+       version               => '3.5.1',
+       wordpress_db_name     => wordpress,
+       wordpress_db_user     => wordpress,
+       wordpress_db_password => 'secret123',
+       wordpress_admin_mail  => 'localhorst@localhost.localhost',
+       multisite             => true,
+     }
