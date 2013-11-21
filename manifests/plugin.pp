@@ -1,15 +1,38 @@
-# Definition: wordpress::plugin
+# == Class: wordpress::app
+#
+# Install wordpress application and its dependencies
+#
+# === Parameters
+#
+# [*location*]
+#   Defines the download url of the plugin
+# [*archive*]
+#   Defines the specific archive file
+#   has to be a zip file.
+# [*activate*]
+#   If set to true the plugin will be enabled by default,
+#   requires an auto-activation.sql in th plugin sql directory.
+#
+# === Variables
 #
 #
-# Parameters:
+# === Examples
 #
-# Actions:
+# wordpress::app { 'superplugin':
+#   loction  => http://wordpress/plugins/,
+#   archive  => superplugin-3.1.4-1,
+#   activate => falce,
 #
-# Requires:
+# === Authors
 #
-# Sample Usage:
+# Volker Schmitz <v.schmitz@tarent.de>
+# Viktor Hamm <v.hamm@tarent.de>
+# Sebastian Reimers <s.reime@tarent.de>
+# Max Marche <m.march@tarent.de>
 #
-# wordpress::plugins { 'superplugin': }
+# === Todos:
+#
+# * add backup by auto avtivation
 #
 define wordpress::plugin(
   $location,
