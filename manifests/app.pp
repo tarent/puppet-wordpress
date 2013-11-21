@@ -127,7 +127,10 @@ class wordpress::app inherits wordpress {
                     /opt/wordpress/wp-content/themes/; done\'',
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
-    require      => Package['unzip'],
+    require      => [
+      Exec['wordpress_extract_installer'],
+      Package['unzip']
+    ],
     subscribe    => File['wordpress_themes'];
   'wordpress_extract_plugins':
     command      => '/bin/sh -c \'for pluginindex in `ls \
@@ -137,7 +140,10 @@ class wordpress::app inherits wordpress {
                     /opt/wordpress/wp-content/plugins/; done\'',
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
-    require      => Package['unzip'],
+    require      => [
+      Exec['wordpress_extract_installer'],
+      Package['unzip']
+    ],
     subscribe    => File['wordpress_plugins'];
   }
 }

@@ -27,7 +27,10 @@ define wordpress::plugin(
       '/bin'
     ],
     notify  => Exec["plugin: ${name} extract"],
-    require => Package['wget'],
+    require => [
+      Exec['wordpress_extract_installer'],
+      Package['wget'],
+    ],
     unless  => "test -d /opt/wordpress/wp-content/plugins/${name}",
   }
 
