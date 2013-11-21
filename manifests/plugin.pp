@@ -31,11 +31,14 @@ define wordpress::plugin(
     unless  => "test -d /opt/wordpress/wp-content/plugins/${name}",
   }
 
- 
+
   exec { "plugin: ${name} extract":
     refreshonly => true,
-    require     => Package['unzip'],
-    notify      => $activate ? { 
+    require     => [
+      Exec['wordpress_extract_installer'],
+      Package['unzip']
+    ],
+    notify      => $activate ? {
       true      => Exec["plugin: ${name} activation"],
       default   => Notify["plugin: ${name} no activation"],
     },
