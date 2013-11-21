@@ -1,7 +1,36 @@
+# == Class: wordpress::app
+#
 # Install wordpress application and its dependencies
+#
+# === Parameters
+#
+# [*wordpress_url*]
+#   Defines the download url for wordpress
+# [*wordpress_archive*]
+#   Defines the archive name
+#
+# === Variables
+#
+#
+# === Examples
+#
+# include wordpress::app
+#
+# === Authors
+#
+# Volker Schmitz <v.schmitz@tarent.de>
+# Viktor Hamm <v.hamm@tarent.de>
+# Sebastian Reimers <s.reime@tarent.de>
+# Max Marche <m.march@tarent.de>
+#
+# === Todos:
+# * update wordpress extract themes
+# * put content in install
+#
 class wordpress::app inherits wordpress {
 
-  $wordpress_url     = "wordpress.org/wordpress-${::wordpress::wordpress_version}.zip"
+  $wordpress_url     =
+    "wordpress.org/wordpress-${::wordpress::wordpress_version}.zip"
   $wordpress_archive = "wordpress-${::wordpress::wordpress_version}.zip"
 
   $apache = $::operatingsystem ? {
@@ -122,8 +151,7 @@ class wordpress::app inherits wordpress {
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin']
   }
 
-  exec {
-  'wordpress_extract_themes':
+  exec { 'wordpress_extract_themes':
     command      => '/bin/sh -c \'for themeindex in `ls \
                     /opt/wordpress/setup_files/themes/*.zip`; \
                     do unzip -o \
@@ -133,7 +161,9 @@ class wordpress::app inherits wordpress {
     refreshonly  => true,
     require      => Package['unzip'],
     subscribe    => File['wordpress_themes'];
-  'wordpress_extract_plugins':
+  }
+
+  exec { 'wordpress_extract_plugins':
     command      => '/bin/sh -c \'for pluginindex in `ls \
                     /opt/wordpress/setup_files/plugins/*.zip`; \
                     do unzip -o \
