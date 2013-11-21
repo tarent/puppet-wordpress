@@ -57,12 +57,13 @@ class wordpress::app inherits wordpress {
   }
 
   exec { 'wordpress_installer':
-    command => "wget -q ${wordpress_url} -O /opt/wordpress/setup_files/${wordpress_archive}",
+    command => "wget -q ${wordpress_url}
+      -O /opt/wordpress/setup_files/${wordpress_archive}",
     path    => [
       '/usr/bin/',
     ],
     notify  => Exec['wordpress_extract_installer'],
-    creates  => "/opt/wordpress/setup_files/${wordpress_archive}",
+    creates => "/opt/wordpress/setup_files/${wordpress_archive}",
   }
 
 
