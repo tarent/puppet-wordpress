@@ -1,4 +1,34 @@
-# Install mysql server and set up wordpress database
+# == Class: wordpress::app
+#
+# Install mysql server
+# and set up initial wordpress database and user
+#
+# === Parameters
+#
+# [*mysqlserver*]
+#   Defines the mysql server package name.
+# [*mysqlclient*]
+#   Defines the mysql client name.
+# [*mysqlservice*]
+#   Defines the mysql service name.
+#
+# === Variables
+#
+#
+# === Examples
+#
+# include wordpress::db
+#
+# === Authors
+#
+# Volker Schmitz <v.schmitz@tarent.de>
+# Viktor Hamm <v.hamm@tarent.de>
+# Sebastian Reimers <s.reime@tarent.de>
+# Max Marche <m.march@tarent.de>
+#
+# === Todos:
+# * should include the offical puppetlabs mysql module
+#
 class wordpress::db {
 
   $mysqlserver = $::operatingsystem ? {
