@@ -27,21 +27,16 @@ define wordpress::plugin(
       '/bin'
     ],
     notify  => Exec["plugin: ${name} extract"],
-    require => Package['wget'],
     unless  => "test -d /opt/wordpress/wp-content/plugins/${name}",
+    require => [
+      Exec['wordpress_extract_installer', 'install initial database'],
+      Package['unzip', 'wget']
+    ],
   }
 
 
   exec { "plugin: ${name} extract":
     refreshonly => true,
-    require     => [
-      Exec['wordpress_extract_installer'],
-      Package['unzip']
-    ],
-    notify      => $activate ? {
-      true      => Exec["plugin: ${name} activation"],
-      default   => Notify["plugin: ${name} no activation"],
-    },
     command     =>
       "unzip /tmp/${archive} -d /opt/wordpress/wp-content/plugins/${name}",
     path        => [
@@ -52,23 +47,21 @@ define wordpress::plugin(
       '/bin',
     ],
   }
-
-  exec { "plugin: ${name} activation":
-    command     => "mysql -u ${wordpress::wordpress_db_user}
-      -p${wordpress::wordpress_db_password}
-      < /opt/wordpress/wp-content/${name}/sql/auto-activation.sql",
-    require     => Exec["plugin: ${name} extract"],
-    path        => [
-      '/usr/local/sbin',
-      '/usr/local/bin',
-      '/usr/sbin',
-      '/usr/bin:/sbin',
-      '/bin',
-    ],
-    refreshonly => true,
-  }
-
-  notify { "plugin: ${name} no activation":
-    message => "plugin:  ${name} will not be auto activated",
+  if $activate == true {
+    exec { "plugin: ${name} activation":
+      subscribe   => Exec["plugin: ${name} extract"],
+      command     => "mysql -u ${wordpress::wordpress_db_user} \
+        -p${wordpress::wordpress_db_password} \
+        -D ${wordpress::wordpress_db_name} \
+        < /opt/wordpress/wp-content/plugins/${name}/sql/auto-activation.sql",
+      path        => [
+        '/usr/local/sbin',
+        '/usr/local/bin',
+        '/usr/sbin',
+        '/usr/bin:/sbin',
+        '/bin',
+      ],
+      refreshonly => true,
+    }
   }
 }
