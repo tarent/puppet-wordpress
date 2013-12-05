@@ -107,7 +107,7 @@ class wordpress::app inherits wordpress {
 
   file { 'wordpress_themes':
     ensure     => directory,
-    path       => "{wp_install_dir}/setup_files/themes",
+    path       => "${wp_install_dir}/setup_files/themes",
     source     => 'puppet:///modules/wordpress/themes/',
     recurse    => true,
     purge      => true,
