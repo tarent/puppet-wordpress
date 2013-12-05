@@ -18,19 +18,21 @@
 #
 class wordpress::config inherits wordpress {
 
-  file { '/opt/wordpress/db_backup':
+  $wp_install_dir = "/opt/${wordpress_path}/${wordpress_install_dir}"
+
+  file { "${wp_install_dir}/db_backup":
     ensure => directory,
   }
 
-  file { '/opt/wordpress/db_backup/initial_dump.sql':
+  file { "${wp_install_dir}/db_backup/initial_dump.sql":
     ensure  => file,
     content => template('wordpress/initial_dump.sql.erb'),
-    require => File['/opt/wordpress/db_backup'],
+    require => File["${wp_install_dir}/db_backup"],
   }
 
   exec { 'install initial database':
     command => "mysql -u $wordpress_db_user -p$wordpress_db_password $wordpress_db_name < /opt/wordpress/db_backup/initial_dump.sql",
-    require => File['/opt/wordpress/db_backup/initial_dump.sql'],
+    require => File["${wp_install_dir}/db_backup/initial_dump.sql"],
     path    => [
       '/usr/local/sbin',
       '/usr/local/bin',

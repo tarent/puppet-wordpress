@@ -29,6 +29,8 @@
 #
 class wordpress::app inherits wordpress {
 
+  $wp_install_dir = "/opt/${wordpress_path}/${wordpress_install_dir}"
+
   $wordpress_url     =
     "wordpress.org/wordpress-${::wordpress::wordpress_version}.zip"
   $wordpress_archive = "wordpress-${::wordpress::wordpress_version}.zip"
@@ -66,13 +68,13 @@ class wordpress::app inherits wordpress {
 
   file { 'wordpress_application_dir':
     ensure  =>  directory,
-    path    =>  '/opt/wordpress',
+    path    =>  "${wp_install_dir}",
     before  =>  File['wordpress_setup_files_dir'],
   }
 
   file { 'wordpress_setup_files_dir':
     ensure  =>  directory,
-    path    =>  '/opt/wordpress/setup_files',
+    path    =>  "${wp_install_dir}/setup_files",
     before  =>  [
       File[
         'wordpress_php_configuration',
@@ -92,20 +94,20 @@ class wordpress::app inherits wordpress {
       '/usr/bin/',
     ],
     notify  => Exec['wordpress_extract_installer'],
-    unless  => "test -e /opt/wordpress/setup_files/${wordpress_archive}",
+    unless  => "test -e ${wp_install_dir}/setup_files/${wordpress_archive}",
   }
 
 
   file {'wordpress_php_configuration':
     ensure     =>  file,
-    path       =>  '/opt/wordpress/wp-config.php',
+    path       =>  "${wp_install_dir}/wp-config.php",
     content    =>  template('wordpress/wp-config.erb'),
     subscribe  =>  Exec['wordpress_extract_installer'],
   }
 
   file { 'wordpress_themes':
     ensure     => directory,
-    path       => '/opt/wordpress/setup_files/themes',
+    path       => "{wp_install_dir}/setup_files/themes",
     source     => 'puppet:///modules/wordpress/themes/',
     recurse    => true,
     purge      => true,
@@ -116,7 +118,7 @@ class wordpress::app inherits wordpress {
 
   file { 'wordpress_plugins':
     ensure     => directory,
-    path       => '/opt/wordpress/setup_files/plugins',
+    path       => "${wp_install_dir}/setup_files/plugins",
     source     => 'puppet:///modules/wordpress/plugins/',
     recurse    => true,
     ignore     => '.svn',
@@ -133,7 +135,7 @@ class wordpress::app inherits wordpress {
   }
 
   if $::wordpress::multisite == true {
-    file { '/opt/wordpress/.htaccess':
+    file { "${wp_install_dir}/.htaccess":
       ensure  => file,
       content => template('wordpress/htaccess.erb'),
       require => File['wordpress_setup_files_dir'],
@@ -143,7 +145,7 @@ class wordpress::app inherits wordpress {
   exec {
   'wordpress_extract_installer':
     command      => "unzip -o\
-                    /opt/wordpress/setup_files/${wordpress_archive}\
+                    ${wp_install_dir}/setup_files/${wordpress_archive}\
                     -d /opt/",
     refreshonly  => true,
     require      => Package['unzip'],
@@ -151,11 +153,11 @@ class wordpress::app inherits wordpress {
   }
 
   exec { 'wordpress_extract_themes':
-    command      => '/bin/sh -c \'for themeindex in `ls \
-                    /opt/wordpress/setup_files/themes/*.zip`; \
+    command      => "/bin/sh -c \'for themeindex in `ls \
+                    ${wp_install_dir}/setup_files/themes/*.zip`; \
                     do unzip -o \
                     $themeindex -d \
-                    /opt/wordpress/wp-content/themes/; done\'',
+                    ${wp_install_dir}/wp-content/themes/; done",
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
     require      => Package['unzip'],
@@ -163,11 +165,11 @@ class wordpress::app inherits wordpress {
   }
 
   exec { 'wordpress_extract_plugins':
-    command      => '/bin/sh -c \'for pluginindex in `ls \
-                    /opt/wordpress/setup_files/plugins/*.zip`; \
+    command      => "/bin/sh -c \'for pluginindex in `ls \
+                    ${wp_install}/setup_files/plugins/*.zip`; \
                     do unzip -o \
                     $pluginindex -d \
-                    /opt/wordpress/wp-content/plugins/; done\'',
+                    ${wp_install_dir}/wp-content/plugins/; done",
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
     require      => Package['unzip'],

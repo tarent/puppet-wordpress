@@ -31,6 +31,8 @@
 #
 class wordpress::db {
 
+  $wp_install_dir = "/opt/${wordpress_path}/${wordpress_install_dir}"
+
   $mysqlserver = $::operatingsystem ? {
     Ubuntu   => mysql-server,
     CentOS   => mysql-server,
@@ -63,15 +65,15 @@ class wordpress::db {
 
   file { 'wordpress_sql_script':
     ensure   => file,
-    path     => '/opt/wordpress/setup_files/create_wordpress_db.sql',
+    path     => "${wp_install_dir}/setup_files/create_wordpress_db.sql",
     content  => template('wordpress/create_wordpress_db.erb');
   }
 
   exec {
     'create_schema':
       path     => '/usr/bin:/usr/sbin:/bin',
-      command  => 'mysql -uroot <\
-                  /opt/wordpress/setup_files/create_wordpress_db.sql',
+      command  => "mysql -uroot <\
+                  ${wp_install_dir}/setup_files/create_wordpress_db.sql",
       unless   => "mysql -uroot -e \"use ${wordpress::db_name}\"",
       notify   => Exec['grant_privileges'],
       require  => [
