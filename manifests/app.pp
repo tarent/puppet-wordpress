@@ -126,13 +126,13 @@ class wordpress::app inherits wordpress {
     subscribe  => Exec['wordpress_extract_installer'],
   }
 
-  file { 'wordpress_vhost':
+  /* file { 'wordpress_vhost':
     ensure   => file,
     path     => $vhost_path,
     source   => 'puppet:///modules/wordpress/wordpress.conf',
     replace  => true,
     require  => Class['apache2'],
-  }
+  } */
 
   if $::wordpress::multisite == true {
     file { "${wp_install_dir}/.htaccess":
