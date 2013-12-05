@@ -152,7 +152,7 @@ class wordpress::app inherits wordpress {
   'wordpress_extract_installer':
     command      => "unzip -o\
                     ${setup_dir}/${wordpress_archive}\
-                    -d ${wp_install_dir}",
+                    -d /opt/${wordpress_path}",
     refreshonly  => true,
     require      => Package['unzip'],
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin']
