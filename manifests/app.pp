@@ -60,7 +60,7 @@ class wordpress::app inherits wordpress {
 
   $vhost_path = $apache ? {
     httpd    => '/etc/httpd/conf.d/wordpress.conf',
-    apache2  => '/etc/apache2/sites-enabled/000-default',
+    apache2  => '/etc/apache2/sites-enabled/000-wordpress',
     default  => '/etc/httpd/conf.d/wordpress.conf',
   }
 
