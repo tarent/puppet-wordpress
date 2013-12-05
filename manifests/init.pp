@@ -62,6 +62,8 @@ class wordpress(
   $blogname = 'wordpress blog',
   $multisite = false,
   $path_current_site = '/',
+  $wordpress_install_dir = 'wordpress',
+  $wordpress_path = '',
 ) {
   $db_name = $wordpress_db_name
   $db_user = $wordpress_db_user
