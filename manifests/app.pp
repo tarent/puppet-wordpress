@@ -159,11 +159,11 @@ class wordpress::app inherits wordpress {
   }
 
   exec { 'wordpress_extract_themes':
-    command      => "/bin/sh -c \'for themeindex in `ls \
+    command      => '/bin/sh -c \'for themeindex in `ls \
                     ${setup_dir}/themes/*.zip`; \
                     do unzip -o \
                     $themeindex -d \
-                    ${wp_install_dir}/wp-content/themes/; done\'",
+                    ${wp_install_dir}/wp-content/themes/; done \'',
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
     require      => Package['unzip'],
