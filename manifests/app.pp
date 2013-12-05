@@ -66,6 +66,12 @@ class wordpress::app inherits wordpress {
     default  => '/etc/httpd/conf.d/wordpress.conf',
   }
 
+  file { 'wordpress_install_dir' : 
+    ensure  => directory,
+    path    => "/opt/${wordpress_path}",
+    before  => File['wordpress_application_dir'],
+  }
+
   file { 'wordpress_application_dir':
     ensure  =>  directory,
     path    =>  "${wp_install_dir}",
