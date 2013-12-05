@@ -171,11 +171,11 @@ class wordpress::app inherits wordpress {
   }
 
   exec { 'wordpress_extract_plugins':
-    command      => "/bin/sh -c \'for pluginindex in `ls \
+    command      => '/bin/sh -c \'for pluginindex in `ls \
                     ${setup_dir}/plugins/*.zip`; \
                     do unzip -o \
                     $pluginindex -d \
-                    ${wp_install_dir}/wp-content/plugins/; done\'",
+                    ${wp_install_dir}/wp-content/plugins/; done\'',
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
     require      => Package['unzip'],

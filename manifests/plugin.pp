@@ -41,7 +41,7 @@ define wordpress::plugin(
 ){
 
   $wordpress_dir = "${wp_install_dir}" 
-  $setup_dir = "${wordpress_dir}/setup_files"
+  $setup_dir = "$opt/setup_files"
 
   exec { "plugin: ${name} download":
     command => "wget -q ${location}/${archive} \
