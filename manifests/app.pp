@@ -163,7 +163,7 @@ class wordpress::app inherits wordpress {
                     ${setup_dir}/themes/*.zip`; \
                     do unzip -o \
                     $themeindex -d \
-                    ${wp_install_dir}/wp-content/themes/; done",
+                    ${wp_install_dir}/wp-content/themes/; done\'",
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
     require      => Package['unzip'],
@@ -175,7 +175,7 @@ class wordpress::app inherits wordpress {
                     ${setup_dir}/plugins/*.zip`; \
                     do unzip -o \
                     $pluginindex -d \
-                    ${wp_install_dir}/wp-content/plugins/; done",
+                    ${wp_install_dir}/wp-content/plugins/; done\'",
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin'],
     refreshonly  => true,
     require      => Package['unzip'],
