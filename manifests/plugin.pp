@@ -38,9 +38,11 @@ define wordpress::plugin(
   $location,
   $archive,
   $activate = false,
+  $wordpress_path,
+  $wordpress_install_dir,
 ){
 
-  $wordpress_dir = "${wp_install_dir}" 
+  $wp_install_dir = "/opt/${wordpress_path}/${wordpress_install_dir}" 
   $setup_dir = "/opt/setup_files"
 
   exec { "plugin: ${name} download":
