@@ -31,7 +31,7 @@ class wordpress::config inherits wordpress {
   }
 
   exec { 'install initial database':
-    command => "mysql -u $wordpress_db_user -p$wordpress_db_password $wordpress_db_name < /opt/wordpress/db_backup/initial_dump.sql",
+    command => "mysql -u $wordpress_db_user -p$wordpress_db_password $wordpress_db_name < ${wp_install_dir}/db_backup/initial_dump.sql",
     require => File["${wp_install_dir}/db_backup/initial_dump.sql"],
     path    => [
       '/usr/local/sbin',

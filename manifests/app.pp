@@ -30,7 +30,7 @@
 class wordpress::app inherits wordpress {
 
   $wp_install_dir = "/opt/${wordpress_path}/${wordpress_install_dir}"
-
+  $setup_dir = '/opt/setup_files'
   $wordpress_url     =
     "wordpress.org/wordpress-${::wordpress::wordpress_version}.zip"
   $wordpress_archive = "wordpress-${::wordpress::wordpress_version}.zip"
@@ -80,7 +80,7 @@ class wordpress::app inherits wordpress {
 
   file { 'wordpress_setup_files_dir':
     ensure  =>  directory,
-    path    =>  "${wp_install_dir}/setup_files",
+    path    =>  "${setup_dir}",
     before  =>  [
       File[
         'wordpress_php_configuration',
@@ -95,12 +95,12 @@ class wordpress::app inherits wordpress {
 
   exec { 'wordpress_installer':
     command => "wget -q ${wordpress_url} -O \
-      ${wp_install_dir}/setup_files/${wordpress_archive}",
+      ${setup_dir}/${wordpress_archive}",
     path    => [
       '/usr/bin/',
     ],
     notify  => Exec['wordpress_extract_installer'],
-    unless  => "test -e ${wp_install_dir}/setup_files/${wordpress_archive}",
+    unless  => "test -e ${setup_files}/${wordpress_archive}",
   }
 
 
@@ -113,7 +113,7 @@ class wordpress::app inherits wordpress {
 
   file { 'wordpress_themes':
     ensure     => directory,
-    path       => "${wp_install_dir}/setup_files/themes",
+    path       => "${setup_dir}/themes",
     source     => 'puppet:///modules/wordpress/themes/',
     recurse    => true,
     purge      => true,
@@ -124,7 +124,7 @@ class wordpress::app inherits wordpress {
 
   file { 'wordpress_plugins':
     ensure     => directory,
-    path       => "${wp_install_dir}/setup_files/plugins",
+    path       => "${setup_dir}/plugins",
     source     => 'puppet:///modules/wordpress/plugins/',
     recurse    => true,
     ignore     => '.svn',
@@ -151,8 +151,8 @@ class wordpress::app inherits wordpress {
   exec {
   'wordpress_extract_installer':
     command      => "unzip -o\
-                    ${wp_install_dir}/setup_files/${wordpress_archive}\
-                    -d /opt/",
+                    ${setup_dir}/${wordpress_archive}\
+                    -d ${wp_install_dir}",
     refreshonly  => true,
     require      => Package['unzip'],
     path         => ['/bin','/usr/bin','/usr/sbin','/usr/local/bin']
@@ -160,7 +160,7 @@ class wordpress::app inherits wordpress {
 
   exec { 'wordpress_extract_themes':
     command      => "/bin/sh -c \'for themeindex in `ls \
-                    ${wp_install_dir}/setup_files/themes/*.zip`; \
+                    ${setup_dir}/themes/*.zip`; \
                     do unzip -o \
                     $themeindex -d \
                     ${wp_install_dir}/wp-content/themes/; done",
@@ -172,7 +172,7 @@ class wordpress::app inherits wordpress {
 
   exec { 'wordpress_extract_plugins':
     command      => "/bin/sh -c \'for pluginindex in `ls \
-                    ${wp_install}/setup_files/plugins/*.zip`; \
+                    ${setup_dir}/plugins/*.zip`; \
                     do unzip -o \
                     $pluginindex -d \
                     ${wp_install_dir}/wp-content/plugins/; done",
