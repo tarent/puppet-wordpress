@@ -72,7 +72,7 @@ class wordpress::db {
   exec {
     'create_schema':
       path     => '/usr/bin:/usr/sbin:/bin',
-      command  => "mysql -uroot <\
+      command  => "mysql -uroot -pTesten123! <\
                   ${setup_files}/create_wordpress_db.sql",
       unless   => "mysql -uroot -pTesten123! -e \"use ${wordpress::db_name}\"",
       notify   => Exec['grant_privileges'],
