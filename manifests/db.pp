@@ -82,7 +82,7 @@ class wordpress::db {
       ];
     'grant_privileges':
       path         => '/usr/bin:/usr/sbin:/bin',
-      command      => "mysql -uroot -e \"grant all privileges on\
+      command      => "mysql -uroot -pTesten123! -e \"grant all privileges on\
                       ${wordpress::db_name}.* to\
                       '${wordpress::db_user}'@'localhost'\
                       identified by '${wordpress::db_password}'\"",
