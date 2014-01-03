@@ -65,7 +65,7 @@ class wordpress::db {
 
   file { 'wordpress_sql_script':
     ensure   => file,
-    path     => "${setup_files}/create_wordpress_db.sql",
+    path     => "${setup_dir}/create_wordpress_db.sql",
     content  => template('wordpress/create_wordpress_db.erb');
   }
 
@@ -73,7 +73,7 @@ class wordpress::db {
     'create_schema':
       path     => '/usr/bin:/usr/sbin:/bin',
       command  => "mysql -uroot -p${wordpress::db_password} <\
-                  ${setup_files}/create_wordpress_db.sql",
+                  ${setup_dir}/create_wordpress_db.sql",
       unless   => "mysql -uroot -pTesten123! -e \"use ${wordpress::db_name}\"",
       notify   => Exec['grant_privileges'],
       require  => [
