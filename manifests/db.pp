@@ -74,8 +74,8 @@ class wordpress::db {
       path     => '/usr/bin:/usr/sbin:/bin',
       command  => "mysql -uroot -p${wordpress::db_password} <\
                   ${setup_dir}/create_wordpress_db.sql",
-      unless   => "mysql -uroot -p${wordpress::db_password} -e 
-                  \"use ${wordpress::db_name}\"",
+      unless   => "mysql -uroot -p${wordpress::db_password} 
+                  -e \"use ${wordpress::db_name}\"",
       notify   => Exec['grant_privileges'],
       require  => [
         Service[ $mysqlservice ],
@@ -83,7 +83,7 @@ class wordpress::db {
       ];
     'grant_privileges':
       path         => '/usr/bin:/usr/sbin:/bin',
-      command      => "mysql -uroot -p${wordpress::db_password} 
+      command      => "mysql -uroot -p${wordpress::db_password}
                       -e \"grant all privileges on\
                       ${wordpress::db_name}.* to\
                       '${wordpress::db_user}'@'localhost'\
