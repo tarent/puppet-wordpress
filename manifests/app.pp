@@ -109,6 +109,7 @@ class wordpress::app inherits wordpress {
     path       =>  "${wp_install_dir}/wp-config.php",
     content    =>  template('wordpress/wp-config.erb'),
     subscribe  =>  Exec['wordpress_extract_installer'],
+    mode       =>  644,
   }
 
   file { 'wordpress_themes':
@@ -145,6 +146,7 @@ class wordpress::app inherits wordpress {
       ensure  => file,
       content => template('wordpress/htaccess.erb'),
       require => File['wordpress_setup_files_dir'],
+      mode    => 644,
     }
   }
 
