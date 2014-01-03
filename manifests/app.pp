@@ -100,7 +100,7 @@ class wordpress::app inherits wordpress {
       '/usr/bin/',
     ],
     notify  => Exec['wordpress_extract_installer'],
-    unless  => "test -e ${setup_files}/${wordpress_archive}",
+    unless  => "test -e ${setup_dir}/${wordpress_archive}",
   }
 
 
