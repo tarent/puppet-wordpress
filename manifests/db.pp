@@ -72,7 +72,7 @@ class wordpress::db {
   exec {
     'create_schema':
       path     => '/usr/bin:/usr/sbin:/bin',
-      command  => "mysql -uroot -pTesten123! <\
+      command  => "mysql -uroot -p${wordpress::db_password} <\
                   ${setup_files}/create_wordpress_db.sql",
       unless   => "mysql -uroot -pTesten123! -e \"use ${wordpress::db_name}\"",
       notify   => Exec['grant_privileges'],
@@ -82,7 +82,8 @@ class wordpress::db {
       ];
     'grant_privileges':
       path         => '/usr/bin:/usr/sbin:/bin',
-      command      => "mysql -uroot -pTesten123! -e \"grant all privileges on\
+      command      => "mysql -uroot -p${wordpress::db_password} 
+                      -e \"grant all privileges on\
                       ${wordpress::db_name}.* to\
                       '${wordpress::db_user}'@'localhost'\
                       identified by '${wordpress::db_password}'\"",
