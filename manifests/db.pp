@@ -74,7 +74,7 @@ class wordpress::db {
       path     => '/usr/bin:/usr/sbin:/bin',
       command  => "mysql -uroot -p${wordpress::db_password} <\
                   ${setup_dir}/create_wordpress_db.sql",
-      unless   => "mysql -uroot -p${wordpress::db_password} 
+      unless   => "mysql -uroot -p${wordpress::db_password} \ 
                   -e \"use ${wordpress::db_name}\"",
       notify   => Exec['grant_privileges'],
       require  => [
