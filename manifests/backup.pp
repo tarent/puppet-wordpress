@@ -15,7 +15,7 @@ define wordpress::backup(
   
   file { 'db backup directory' : 
     ensure   => directory,
-    path     => ${backup_dir},
+    path     => "${backup_dir}",
     before   => Exec['db database backup'],
   }
 
