@@ -24,7 +24,7 @@ define wordpress::backup(
       '/usr/bin:/sbin',
       '/bin',
     ],
-    unless   =>  "mysql -uroot -p${::wordpress::wordpress_db_passoword} -e \"use ${::wordpress::wordpress_db_name\"",
+    unless   =>  "mysql -uroot -p${::wordpress::wordpress_db_passoword} -e \"use ${::wordpress::wordpress_db_name}\"",
     
   }
 
