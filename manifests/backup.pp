@@ -13,7 +13,13 @@ define wordpress::backup(
   $backup_name,
 ){
   
-  exec { "db database backup" : 
+  file { 'db backup directory' : 
+    ensure   => directory,
+    path     => ${backup_dir},
+    before   => Exec['db database backup'],
+  }
+
+  exec { 'db database backup' : 
     command  =>  "mysqldump --xml -t -u${::wordpress::wordpress_db_user} \
     --pasword=${::wordpress::wordpress_db_password} \
     ${::wordpress::wordpress_db_name} > ${backup_dir}${backup_name}",
