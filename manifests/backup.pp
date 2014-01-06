@@ -8,6 +8,19 @@
 #  Defines the file location to store the backup file.
 # [*backup_name*]
 #  Defines the name of the backup file.
+#
+# === Variables
+#
+# === Examples
+#
+# wordpress::backup { 'backup': 
+#   backup_dir => /opt/files/,
+#   backup_nme => mysqldump.xml,
+# }
+#
+# === Authors
+# Viktor Hamm <v.hamm@tarent.de>
+#
 define wordpress::backup(
   $backup_dir,
   $backup_name,
