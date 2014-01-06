@@ -20,7 +20,7 @@ define wordpress::backup(
   }
 
   exec { 'db database backup' : 
-    command  =>  "mysqldump --xml -t -u${::wordpress::wordpress_db_user} \
+    command  =>  "mysqldump --xml -t -uroot \
     --pasword=${::wordpress::wordpress_db_password} \
     ${::wordpress::wordpress_db_name} > ${backup_dir}${backup_name}",
     path     =>  [
