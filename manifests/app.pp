@@ -147,6 +147,7 @@ class wordpress::app inherits wordpress {
       content => template('wordpress/htaccess.erb'),
       require => File['wordpress_setup_files_dir'],
       mode    => 644,
+      unless  => "test -f ${wp_install_dir}/.htaccess",
     }
   }
 
