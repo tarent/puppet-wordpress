@@ -143,11 +143,11 @@ class wordpress::app inherits wordpress {
 
   if $::wordpress::multisite == true {
     file { "${wp_install_dir}/.htaccess":
-      ensure  => file,
-      content => template('wordpress/htaccess.erb'),
-      require => File['wordpress_setup_files_dir'],
-      mode    => 644,
-      unless  => "test -f ${wp_install_dir}/.htaccess",
+      ensure   => file,
+      content  => template('wordpress/htaccess.erb'),
+      require  => File['wordpress_setup_files_dir'],
+      mode     => 644,
+      replace  => false,
     }
   }
 
