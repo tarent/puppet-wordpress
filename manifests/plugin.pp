@@ -98,7 +98,7 @@ define wordpress::plugin(
       source  => 'puppet:///modules/wordpress/auto-activation.sql',
       path    => '/tmp/auto-activation.sql',
       before  => Exec["plugin: ${name} activation"],
-      unless  => 'test -f /tmp/auto-activation.sql',
+      onlyif  => 'test -f /tmp/auto-activation.sql',
     }
 
     exec { "plugin: ${name} activation":
