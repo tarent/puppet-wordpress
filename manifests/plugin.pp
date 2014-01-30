@@ -94,11 +94,17 @@ define wordpress::plugin(
       notify      => Exec["plugin: ${name} activation"],
     }
 
+    file { "plugin: ${name} activation file" : 
+      source  => 'puppet:///modules/wordpress/auto-activation.sql',
+      path    => 'tmp/auto-activation.sql',
+      before  => Exec["plugin: ${name} activation"],
+
+    }
     exec { "plugin: ${name} activation":
       command     => "mysql -u ${wordpress::wordpress_db_user} \
         -p${wordpress::wordpress_db_password} \
         -D ${wordpress::wordpress_db_name} \
-        < ${wp_install_dir}/wp-content/plugins/${name}/sql/auto-activation.sql",
+        < /tmp/auto-activation.sql",
       path        => [
         '/usr/local/sbin',
         '/usr/local/bin',
@@ -107,6 +113,7 @@ define wordpress::plugin(
         '/bin',
       ],
       refreshonly => true,
+      require     => File["plugin: ${name} activation file"],
     }
   }
 }
