@@ -96,10 +96,10 @@ define wordpress::plugin(
 
     file { "plugin: ${name} activation file" : 
       source  => 'puppet:///modules/wordpress/auto-activation.sql',
-      path    => 'tmp/auto-activation.sql',
+      path    => '/tmp/auto-activation.sql',
       before  => Exec["plugin: ${name} activation"],
-
     }
+
     exec { "plugin: ${name} activation":
       command     => "mysql -u ${wordpress::wordpress_db_user} \
         -p${wordpress::wordpress_db_password} \
