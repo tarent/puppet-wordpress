@@ -1,1 +1,2 @@
 CREATE DATABASE IF NOT EXISTS <%= @db_name %>;
+CREATE USER '<%= @db_user %>'@'localhost' IDENTIFIED BY '<%= @db_password %>';
