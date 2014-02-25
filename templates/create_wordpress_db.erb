@@ -1,4 +1,4 @@
 CREATE DATABASE IF NOT EXISTS <%= @db_name %>;
 CREATE USER '<%= @db_user %>'@'localhost' IDENTIFIED BY '<%= @db_password %>';
 CREATE USER '<%= @db_user_bak %>'@'localhost' IDENTIFIED BY '<%= @db_password_bak %>';
-GRANT SELECT ON <%= @db_name %>.* TO <%= @db_user_bak %>'@'localhost' IDENTIFIED BY <%= @db_password_bak %>;
+GRANT SELECT ON '<%= @db_name %>.*' TO '<%= @db_user_bak %>'@'localhost' IDENTIFIED BY '<%= @db_password_bak %>';
