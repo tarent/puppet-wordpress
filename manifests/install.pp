@@ -21,4 +21,8 @@ class wordpress::install {
   package { 'wget':
     ensure => installed,
   }
+
+  package { 'php5-curl': 
+    ensure => installed,
+  }
 }
