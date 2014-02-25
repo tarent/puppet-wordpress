@@ -70,6 +70,8 @@ class wordpress(
   $db_name = $wordpress_db_name
   $db_user = $wordpress_db_user
   $db_password = $wordpress_db_password
+  $db_user_bak = $wordpress_db_user_bak
+  $db_password_bak = $wordpress_password_bak
 
   include 'apache2'
   include 'wordpress::install'
