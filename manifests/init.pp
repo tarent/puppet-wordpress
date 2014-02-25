@@ -57,6 +57,8 @@ class wordpress(
   $wordpress_db_user='wordpress',
   $wordpress_db_password='password',
   $wordpress_admin = 'admin',
+  $wordpress_db_user_bak ='wordpress_bak',
+  $wordpress_db_password_bak = 'password_bak',
   $wordpress_admin_mail = 'localhost@localhost',
   $wordpress_version = '3.7.1',
   $blogname = 'wordpress blog',
